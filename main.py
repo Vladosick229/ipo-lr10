@@ -25,3 +25,80 @@ def save_to_json(quotes,file="data.json"):
         json.dump(quotes, f, ensure_ascii=False, indent=4)
 
 save_to_json(quotes)
+
+def html(file="data.json",file_html="index.html"):
+    with open(file,"r",encoding="utf-8")as f:
+        quotes=json.load(f)
+    
+    html_cont='''
+    <html>
+    <head>
+        <title>Список цитат</title>
+         <style>
+            body {
+                color: #696969;
+            }
+            table {
+                background: #fff;
+            }
+            th, td {
+                padding: 20px;
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+            th {
+                background-color: #f2f2f2;
+                color: #333;
+            }
+            h1 {
+                text-align: center;
+                margin-bottom: 40px;
+            }
+            p {
+                text-align: center;
+                margin-top: 40px;
+            }
+            a {
+                color: #ff7e5f;
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <h1>Коллекция цитат</h1>
+            <table>
+                <tr>
+                    <th>№</th>
+                    <th>Цитата</th>
+                    <th>Автор</th>
+                </tr>
+    '''
+
+    # Добавление цитат в таблицу
+    for idx, quote in enumerate(quotes, 1):
+        html_cont += f'''
+        <tr>
+            <td><h3>{idx}</h3></td>
+            <td><h3>{quote["quote"]}</h3></td>
+            <td><h3>{quote["author"]}<h3>/</td>
+        </tr>
+        '''
+
+    # Завершение HTML-контента
+    html_cont += '''
+            </table>
+            <p>
+                <h2><a href="http://quotes.toscrape.com/">Источник: Цитаты для соскребания</a></h2>
+            </p>
+        </div>
+    </body>
+    </html>
+    '''
+
+    # Запись HTML-контента в файл
+    with open(file_html, "w", encoding="utf-8") as f:
+        f.write(html_cont)
+
+# Вызов функции для генерации HTML
+html()
